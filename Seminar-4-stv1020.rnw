@@ -37,7 +37,14 @@ table() #fordeling
 @
 \item Missing: Hvordan finne, håndtere og fjerne missing?
 
-Det finnes mange grunner til at det er tomme celler/manglende verdier/svar i dataene. Vi skal vise hvordan vi kan finne missing verdier og hva man kan gjøre med de. Men det er viktig å teoretisk begrunne hvordan man håndterer NA-verdier på bakgrunn av utvalget av populasjonen. Er missing-verdier systematiske eller er de tilfeldige. Les mer om missing i pensum på: 
+Det finnes mange grunner til at det er tomme celler/manglende verdier/svar i dataene. 
+Vi skal vise hvordan vi kan finne missing verdier og hva man kan gjøre med de. 
+Det er viktig å teoretisk begrunne hvordan man håndterer NA-verdier på bakgrunn av utvalget av populasjonen. 
+Er missing-verdier systematiske eller er de tilfeldige. Les mer om missing i pensum på: 
+
+Uansett hva du gjør i R så er du nødt til å fortelle hvordan du velger å forholde deg til missing verdier. 
+Vi skal vise hvordan du kan forholde deg til NA i R. 
+Et annet viktig poeng å trekke frem er at i mange funksjoner i R så er vi nødt til å fjerne de NA. 
 
 Hvordan finne missing. Mest vanlig er å bruke 
 <<Telle missing, echo=TRUE, results='markup'>>=
@@ -48,20 +55,29 @@ sum(is.na(data$internettbruk)) # Viser hvor mange missing det er på en variabel
 
 @
 
-Du kan også bruke denne koden så får du opp masse informasjon om hver enkelt variabel. Legg merke til at NAs er på slutten
+Du kan også bruke denne koden så får du opp masse informasjon om hver enkelt variabel. Legg merke til at NAs er på slutten. 
+Denne koden er derimot ikke så fin å bruke dersom du har et datasett med 500 variable.
 <<>>=
   
 summary(data)
 
 @
 
-Prøv å se om du forstår hva som står på hjelpefilen for NA. 
-
-Slik kan du finne NA, eller missing verdier 
+Slik kan du finne NA, eller missing verdier. 
+Man kan lage subset av datasettet å hente ut de verdiene man er interessert i. 
 
 <<>>= 
 
+data <- data %>% 
+drop_na() # Her kan du velge alle variable eller plukke ut de som du vil fjerne NA fra. 
+
 @
+
+Dersom man er interessert i å se på forskjellen på ulike variable før og etter NA for å se om fordelingen har endret seg, 
+så kan man lage distribusjonsplott til de ulike variabelene før og etter man har fjernet NA. 
+Da bør man kjøre den koden over, men ikke overskrive det datasettet vi allerede har. 
+
+
 \item Statistiske mål (hva er på pensum?)
 \item Bivariat analyse -- deskriptiv statistikk på to variabler. 
 
