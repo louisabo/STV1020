@@ -1,0 +1,16 @@
+\documentclass{article}
+\title{Seminar 4 - STV1020: BIVARIAT ANALYSE}
+\begin{document}
+
+\maketitle
+Dette skal vi gjennomgå i dette seminaret
+\begin{enumerate}
+\item Laste inn data og ulike typer av data. 
+\item Missing 
+\item Statistiske mål (hva er på pensum?)
+\item Bivariat analyse -- deskriptiv statistikk på to variabler
+
+
+\end{enumerate}
+
+\end{document}
