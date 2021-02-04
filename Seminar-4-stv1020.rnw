@@ -6,11 +6,68 @@
 Dette skal vi gjennomgå i dette seminaret
 \begin{enumerate}
 \item Laste inn data og ulike typer av data. 
-\item Missing 
+
+Det finnes mange typer av data. 
+<<Laste inn data, echo=TRUE, results='markup'>>= 
+
+data <- read.csv("https://raw.githubusercontent.com/louisabo/STV4020A/master/SEMINAR3/internett.csv")
+
+save(data, file = "internettbruk.rda")
+
+load("internettbruk.rda") #forutsetter setwd/prosjekt
+
+@
+
+BESKRIV DATA LITT FØR VI GÅR VIDERE.
+
+Før vi går videre vil vi se på dataene våre. 
+Disse kodene har dere sikkert sett før: 
+<<Oversikt over data, echo=TRUE, results='markup'>>= 
+
+View()
+
+head()
+tail() 
+
+summary() #denne viser alt -- målenivå, NAs, gjennomsnitt osv
+
+range() #spennet
+table() #fordeling
+
+@
+\item Missing: Hvordan finne, håndtere og fjerne missing?
+
+Det finnes mange grunner til at det er tomme celler/manglende verdier/svar i dataene. Vi skal vise hvordan vi kan finne missing verdier og hva man kan gjøre med de. Men det er viktig å teoretisk begrunne hvordan man håndterer NA-verdier på bakgrunn av utvalget av populasjonen. Er missing-verdier systematiske eller er de tilfeldige. Les mer om missing i pensum på: 
+
+Hvordan finne missing. Mest vanlig er å bruke 
+<<Telle missing, echo=TRUE, results='markup'>>=
+
+sum(is.na(data)) # Teller total missing i data. Kan være flere missing på en rad. 
+
+sum(is.na(data$internettbruk)) # Viser hvor mange missing det er på en variabel
+
+@
+
+Du kan også bruke denne koden så får du opp masse informasjon om hver enkelt variabel. Legg merke til at NAs er på slutten
+<<>>=
+  
+summary(data)
+
+@
+
+Prøv å se om du forstår hva som står på hjelpefilen for NA. 
+
+Slik kan du finne NA, eller missing verdier 
+
+<<>>= 
+
+@
 \item Statistiske mål (hva er på pensum?)
-\item Bivariat analyse -- deskriptiv statistikk på to variabler
+\item Bivariat analyse -- deskriptiv statistikk på to variabler. 
 
+<<>>= 
 
+@
 \end{enumerate}
 
 \end{document}
