@@ -1,0 +1,242 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.2.4)  11 FEB 2021 11:44
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**Oppgaver_seminar4.tex
+(./Oppgaver_seminar4.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-02>
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
+)
+\c@part=\count177
+\c@section=\count178
+\c@subsection=\count179
+\c@subsubsection=\count180
+\c@paragraph=\count181
+\c@subparagraph=\count182
+\c@figure=\count183
+\c@table=\count184
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.
+sty
+Package: graphicx 2020/09/09 v1.2b Enhanced LaTeX Graphics (DPC,SPQR)
+
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/keyval.st
+y
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks15
+)
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphics.
+sty
+Package: graphics 2020/08/30 v1.4c Standard LaTeX Graphics (DPC,SPQR)
+
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graph
+ics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-def/pdfte
+x.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen139
+\Gin@req@width=\dimen140
+)
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2020/02/24 v1.2b Standard LaTeX Color (DPC)
+
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color
+.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+)
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip49
+\fb@frw=\dimen141
+\fb@frh=\dimen142
+\FrameRule=\dimen143
+\FrameSep=\dimen144
+) (c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/alltt.sty
+Package: alltt 1997/06/16 v2.0g defines alltt environment
+)
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backen
+d-pdftex.def
+File: l3backend-pdftex.def 2020-01-29 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count185
+\l__pdf_internal_box=\box47
+) (./Oppgaver_seminar4.aux)
+\openout1 = `Oppgaver_seminar4.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epsto
+pdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstop
+df-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 58.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 58.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 58.
+ [1
+
+{c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdfte
+x.map}] [2]
+Package color Info: Redefining color shadecolor on input line 94.
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 96.
+
+Overfull \hbox (15.9971pt too wide) in paragraph at lines 112--113
+[]\OT1/cmtt/m/it/10 ## -- Attaching packages ----------------------------------
+-----
+ []
+
+
+Overfull \hbox (98.52637pt too wide) in paragraph at lines 116--116
+[]\OT1/cmtt/m/it/10 ## -- Conflicts ------------------------------------------ 
+tidyverse[]conflicts()
+ []
+
+Package color Info: Redefining color shadecolor on input line 122.
+
+Overfull \hbox (57.99673pt too wide) in paragraph at lines 128--128
+[]\OT1/cmtt/m/n/10 ## [1] "rik"      "alder"    "kjonn"    "tillit"   "valg"   
+  "redusere"[] 
+ []
+
+Package color Info: Redefining color shadecolor on input line 134.
+Package color Info: Redefining color shadecolor on input line 146.
+[3]
+Overfull \hbox (0.24724pt too wide) in paragraph at lines 167--167
+[]\OT1/cmtt/m/n/10 ##       rik            alder          kjonn           tilli
+t[] 
+ []
+
+
+Overfull \hbox (15.9971pt too wide) in paragraph at lines 167--167
+[]\OT1/cmtt/m/n/10 ##  Min.   :1.000   Min.   :15.0   Min.   :1.000   Min.   : 
+0.00[] 
+ []
+
+
+Overfull \hbox (15.9971pt too wide) in paragraph at lines 167--167
+[]\OT1/cmtt/m/n/10 ##  1st Qu.:4.000   1st Qu.:32.0   1st Qu.:1.000   1st Qu.: 
+4.00[] 
+ []
+
+
+Overfull \hbox (15.9971pt too wide) in paragraph at lines 167--167
+[]\OT1/cmtt/m/n/10 ##  Median :5.000   Median :47.5   Median :1.000   Median : 
+5.00[] 
+ []
+
+
+Overfull \hbox (15.9971pt too wide) in paragraph at lines 167--167
+[]\OT1/cmtt/m/n/10 ##  Mean   :4.558   Mean   :47.1   Mean   :1.447   Mean   : 
+5.28[] 
+ []
+
+
+Overfull \hbox (15.9971pt too wide) in paragraph at lines 167--167
+[]\OT1/cmtt/m/n/10 ##  3rd Qu.:5.000   3rd Qu.:61.0   3rd Qu.:2.000   3rd Qu.: 
+7.00[] 
+ []
+
+
+Overfull \hbox (15.9971pt too wide) in paragraph at lines 167--167
+[]\OT1/cmtt/m/n/10 ##  Max.   :6.000   Max.   :90.0   Max.   :2.000   Max.   :1
+0.00[] 
+ []
+
+Package color Info: Redefining color shadecolor on input line 189.
+Package color Info: Redefining color shadecolor on input line 210.
+[4]
+Package color Info: Redefining color shadecolor on input line 225.
+Package color Info: Redefining color shadecolor on input line 248.
+Package color Info: Redefining color shadecolor on input line 260.
+
+Overfull \hbox (152.49591pt too wide) in paragraph at lines 276--276
+[][]\OT1/cmtt/m/n/10 diff[][]<-[] []mean[][](df[][]$[][]alder[df[][]$[][]kjonn[
+] []==[] []1[][]],[] []na.rm[] []= T)[] []-[] []mean[][](df[][]$[][]alder[df[][
+]$[][]kjonn[] []==[] []2[][]],[] []na.rm[] []= T)[][] 
+ []
+
+[5]
+Package color Info: Redefining color shadecolor on input line 290.
+<figure/10-1.pdf, id=25, 505.89pt x 505.89pt>
+File: figure/10-1.pdf Graphic file (type pdf)
+<use figure/10-1.pdf>
+Package pdftex.def Info: figure/10-1.pdf  used on input line 304.
+(pdftex.def)             Requested size: 319.99997pt x 320.0015pt.
+Package color Info: Redefining color shadecolor on input line 310.
+ [6 <./figure/10-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 325.
+<figure/12-1.pdf, id=34, 505.89pt x 505.89pt>
+File: figure/12-1.pdf Graphic file (type pdf)
+<use figure/12-1.pdf>
+Package pdftex.def Info: figure/12-1.pdf  used on input line 335.
+(pdftex.def)             Requested size: 319.99997pt x 320.0015pt.
+
+Overfull \hbox (1.98335pt too wide) in paragraph at lines 339--339
+[][]\OT1/cmtt/m/it/10 # Jo eldre man blir, jo mindre viktig blir det ^^Wa a v^^
+Zre rik, [][] 
+ []
+
+[7 <./figure/12-1.pdf>] [8] (./Oppgaver_seminar4.aux) ) 
+Here is how much of TeX's memory you used:
+ 1081 strings out of 481251
+ 17873 string characters out of 5913866
+ 297909 words of memory out of 5000000
+ 18043 multiletter control sequences out of 15000+600000
+ 407714 words of font info for 42 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 68i,6n,74p,342b,357s stack positions out of 5000i,500n,10000p,200000b,80000s
+<c:/Users/sk_gr/AppData/
+Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/Users/
+sk_gr/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.
+pfb><c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmitt10.pfb><c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmr10.pfb><c:/Users/sk_gr/AppData/Roaming/TinyTeX/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/Users/sk_gr/AppData/Roaming/Ti
+nyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/Users/sk_gr/AppDa
+ta/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Oppgaver_seminar4.pdf (8 pages, 135836 bytes).
+PDF statistics:
+ 72 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+

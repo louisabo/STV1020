@@ -1,0 +1,185 @@
+\documentclass{article}
+\title{Oppgaver R-seminar 4
+  \linebreak STV1020 -- VÅREN 2021}
+\author{Louisa Boulaziz}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+\section{OPPGAVER}
+\begin{enumerate}
+\item Last inn datasettet "VALGDATA.Rdata"
+\item Hva er navnene på variablene i datasettet? 
+\item Hvor mang missing er det totalt i datasettet?
+\item Hvor mange missing er det på hver enkelt variabel?
+\item Lag et subset av dataene hvor du fjerner NA på variabelen valg.
+\item Hvor mange kvinner og hvor mange menn er det i datasettet?
+\item Gjør variabelen alder og kjønn til numerisk.
+\item Finn gjennomsnittsalderen. 
+\item Finn gjennomsnittsalderen til henholdsvis menn og kvinner. Regn ut forskjellen.
+\item Få oversikt over variablen valg. Lag en oversikt som viser den univariate fordelingen -- hvor mange har stemt på hvert av partiene?
+\item Finn korrelasjonen mellom alder og rik. 
+\item Lag et spredningsdiagram mellom alder og rik med støttelinje. Endre navnene på x-aksen, y-aksen, og gi diagrammet en tittel. Tolk form, retning og styrke.
+
+
+\end{enumerate}
+
+\hfill \break \textbf{Variabler}
+\begin{enumerate}
+\item rik -- hvor viktig er det å være rik, ha penger og dyre ting? (1-6), 1 = helt enig, 6 = helt uenig 
+\item alder -- i antall år
+\item kjonn -- dikotom, 1 = mann, 2 = kvinne
+\item tillit -- tillit til politikere, (1-10), 1 = ikke noe tillit, 10 = full tillit
+\item valg -- hvilket parti stemte du ved forrige stortingsvalg
+\item redusere -- Er du enig i at regjeringen skal omfordele goder. (1-5), 1 = veldig enig, 5 = helt uenig.
+\end{enumerate}
+
+
+\newpage 
+\section{FASIT}
+\begin{enumerate}
+\item Last inn datasettet "VALGDATA.Rdata" og last inn pakken "tidyverse"
+<<en, echo=TRUE, results='markup'>>=
+load("VALGDATA.Rdata")
+
+# Bytter navn
+
+data <- nyedata
+
+# Fjerner den andre 
+
+rm(nyedata)
+
+# Pakke 
+
+library(tidyverse)
+
+@
+
+\item Hva er navnene på variablene i datasettet? 
+
+<<to, echo=TRUE, results='markup'>>=
+
+show(variable.names(data))
+
+@
+\item Hvor mang missing er det totalt i datasettet?
+
+<<tre, echo=TRUE, results='markup'>>=
+
+sum(is.na(data))
+
+@
+\item Hvor mange missing er det på hver enkelt variabel?
+
+<<fire, echo=TRUE, results='markup', warning=FALSE>>=
+
+summary(data) 
+
+# Eventuelt en for en 
+
+sum(is.na(data$redusere))
+sum(is.na(data$valg))
+
+@
+Variable som har målenivå "character" viser ikke NA i funksjonen "summary(data)"
+
+\item Lag et subset av dataene hvor du fjerner NA på variabelen valg
+
+<<fem, echo=TRUE, results='markup', warning=FALSE>>=
+
+df <- data %>% 
+  drop_na(valg)
+
+sum(is.na(data$valg)) # sjekker at det blir riktig 
+
+1406-323 # regner ut 
+@
+\item Hvor mange kvinner og hvor mange menn er det i datasettet?
+
+<<seks, echo=TRUE, results='markup', warning=FALSE>>=
+table(data$kjonn)
+
+@
+
+\item Gjør variabelen alder og kjønn til numerisk.
+
+<<syv, echo=TRUE, results='markup', warning=FALSE>>=
+
+class(df$alder)
+df$alder <- as.numeric(df$alder)
+
+class(df$kjonn)
+
+df$kjonn <- as.numeric(df$kjonn)
+
+
+
+@
+\item Finn gjennomsnittsalderen. 
+
+<<åtte, echo=TRUE, results='markup', warning=FALSE>>=
+
+mean(df$alder, na.rm = TRUE)
+
+@
+\item Finn gjennomsnittsalderen til henholdsvis menn og kvinner. Regn ut forskjellen.
+
+<<ni, echo=TRUE, results='markup', warning=FALSE>>=
+
+menn <- mean(df$alder[df$kjonn == 1], na.rm = T)
+menn
+
+kvinner <- mean(df$alder[df$kjonn == 2], na.rm = T)
+kvinner
+
+diff<- mean(df$alder[df$kjonn == 1], na.rm = T) - mean(df$alder[df$kjonn == 2], na.rm = T)
+
+diff
+@
+
+
+\item Få oversikt over variablen valg. Lag en oversikt som viser den univariate fordelingen -- hvor mange har stemt på hvert av partiene?
+
+<<10, echo=TRUE, results='markup', warning=FALSE>>=
+
+table(df$valg)
+
+ggplot(df, aes(valg)) + 
+  geom_bar() 
+
+@
+
+\item Finn korrelasjonen mellom alder og rik. 
+<<11, echo=TRUE, results='markup'>>=
+
+cor(x= df$rik, 
+    y= df$alder,
+    use = "pairwise.complete.obs")
+
+@
+
+\item Lag et spredningsdiagram mellom alder og rik med støttelinje. Endre på navnene på x-aksen, y-aksen, og gi diagrammet en tittel. Tolk form, retning og styrke.
+
+<<12, echo=TRUE, results='markup'>>=
+
+# Lager plot med støttelinje
+scatter.smooth(df$rik ~ df$alder, 
+               main = "Spredningsdiagram for alder og 
+               viktigheten av å være rik", 
+               xlab = "Alder", 
+               ylab = "Viktigheten av å være rik")
+
+# Ingen svært tydelig gruppering langs en rett linje
+# Positiv sammenheng. (0.32)
+# Jo eldre man blir, jo mindre viktig blir det å a være rik, 
+# ha penger og dyre ting. 
+# Men svak sammenheng. 0.32. 
+
+@
+
+\end{enumerate}
+
+\end{document}

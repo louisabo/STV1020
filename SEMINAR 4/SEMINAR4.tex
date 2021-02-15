@@ -1,0 +1,677 @@
+\documentclass[a4 paper, 12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\title{Seminar 4: BIVARIAT ANALYSE}
+\date{STV1020 Vår 2021}
+\pagenumbering{arabic}
+
+\usepackage{geometry}
+\geometry{marginparwidth=250pt}
+\geometry{textheight=660pt}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\maketitle
+Dette skal vi gjennomgå i dette seminaret
+\begin{enumerate}
+\item Laste inn data og ulike typer av data. 
+
+Det finnes mange typer av data. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlstd{data} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"https://raw.githubusercontent.com/louisabo/STV4020A/master/SEMINAR3/internett.csv"}\hlstd{)}
+
+\hlkwd{save}\hlstd{(data,} \hlkwc{file} \hlstd{=} \hlstr{"internettbruk.rda"}\hlstd{)}
+
+\hlkwd{load}\hlstd{(}\hlstr{"internettbruk.rda"}\hlstd{)} \hlcom{#forutsetter setwd/prosjekt}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Bare som en illustrasjon så kan dere bruke koden "save" for å lagredata. Jeg velger datasettet i global environment (det heter data) også velger jeg et navn. Legg merke til at jeg skriver ".rda" -- som indikerer filformatet. Du kan også laste inn f.eks data fra excel eller lagre det som excel, men da trenger du å laste ned en pakke som gjør det.
+
+Datasettet heter internettbruk og omhandler internettbruken til italienere. Det betstår av et utvalgt variabler hentet fra European Social Survey (ESS) runde 9 (2018). Enhetene er italienske statsborgere og samlet innholder datasettet 2745 observasjoner og 5 variable: 
+\begin{enumerate}
+\item Kjonn -- Mann = 1, Kvinne = 2
+\item Alder -- Alder til respondenten 
+\item Utdanning -- Antall år med fullført utdanning 
+\item Tillit -- Tillit til det italienske parlament (0-10), 0 = ingen tillit, 10 = fullstendig tillit 
+\item Internettbruk -- Hvor ofte bruker respondenten internett? (1-5), 1 = aldri, 5 = hver dag. 
+\end{enumerate}
+
+Før vi går videre vil vi se på dataene våre. 
+Disse kodene har dere sikkert sett før: 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# View()}
+
+\hlcom{# head()}
+\hlcom{# tail() }
+
+\hlcom{# summary() #denne viser alt -- målenivå, NAs, gjennomsnitt osv}
+
+\hlcom{# range() #spennet}
+\hlcom{# (data) #fordeling}
+
+\hlcom{# Vi kan også se på fordelinger vha av plotting. }
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\item \textbf{Missing - NA - NOT AVAILBLE}
+Det finnes mange grunner til at det er tomme celler/manglende verdier/svar i dataene. Vi skal vise hvordan vi kan finne missing verdier og hva man kan gjøre med de. Men det er viktig å teoretisk begrunne hvordan man håndterer NA-verdier på bakgrunn av utvalget av populasjonen. Er missing-verdier systematiske eller er de tilfeldige. Når vi skal finne missing er det mest vanlig er å bruke 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(}\hlkwd{is.na}\hlstd{(data))} \hlcom{# Teller total missing i data. Kan være flere missing på en rad. }
+\end{alltt}
+\begin{verbatim}
+## [1] 200
+\end{verbatim}
+\begin{alltt}
+\hlkwd{sum}\hlstd{(}\hlkwd{is.na}\hlstd{(data}\hlopt{$}\hlstd{internettbruk))} \hlcom{# Viser hvor mange missing det er på en variabel}
+\end{alltt}
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Du kan også bruke denne koden så får du opp masse informasjon om hver enkelt variabel. Legg merke til at NAs er på slutten
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(data)}
+\end{alltt}
+\begin{verbatim}
+##  internettbruk       kjonn           alder         utdanning   
+##  Min.   :1.000   Min.   :1.000   Min.   :16.00   Min.   : 0.0  
+##  1st Qu.:2.000   1st Qu.:1.000   1st Qu.:36.00   1st Qu.: 8.0  
+##  Median :5.000   Median :2.000   Median :52.00   Median :12.0  
+##  Mean   :3.629   Mean   :1.527   Mean   :51.28   Mean   :11.5  
+##  3rd Qu.:5.000   3rd Qu.:2.000   3rd Qu.:67.00   3rd Qu.:14.0  
+##  Max.   :5.000   Max.   :2.000   Max.   :90.00   Max.   :37.0  
+##  NA's   :5                       NA's   :21      NA's   :85    
+##      tillit      
+##  Min.   : 0.000  
+##  1st Qu.: 2.000  
+##  Median : 5.000  
+##  Mean   : 4.251  
+##  3rd Qu.: 6.000  
+##  Max.   :10.000  
+##  NA's   :89
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Prøv å se om du forstår hva som står på hjelpefilen for NA. Vanligvis må vi beskrive hvordan NA er. Vi må også velge hva vi skal gjøre med dem. Veldig vanlig er å fjerne NA hvis de er 'missing at random' eller missing completely at random.' Du kan velge å fjerne alle missing verdier eller bare missing verdier på spesifikke variable. Når vi begynner med analyser så vil R ta høyde for de tomme cellene, R fjerner dem automatisk. Det er som når vi bruker gjennomsnittet -- man kan ikke regne gjennomsnittet av missing, derfor må vi si til R hvordan R skal håndtere missing. 
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Bruk pakken tidyverse}
+\hlcom{# Subset }
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+         \item \textbf{Statistiske mål} (hva er på pensum?)
+       
+       Statistiske mål forteller oss noe om fordelingen til ulike variabler, som for eksempel gjennomsnitt, median og standardavvik, men også minimum- og maksimumverdier, typetall og frekvens. Statistiske mål på sentraltendens er gjennomsnitt, median og modus. Statistiske mål på spredning i dataene er standardavviket og varians. 
+       
+       For å finne enkelte statistiske mål raskt, er summary()-funksjonen fin. 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{summary}\hlstd{(data)}
+\end{alltt}
+\begin{verbatim}
+##  internettbruk       kjonn           alder         utdanning   
+##  Min.   :1.000   Min.   :1.000   Min.   :16.00   Min.   : 0.0  
+##  1st Qu.:2.000   1st Qu.:1.000   1st Qu.:36.00   1st Qu.: 8.0  
+##  Median :5.000   Median :2.000   Median :52.00   Median :12.0  
+##  Mean   :3.629   Mean   :1.527   Mean   :51.28   Mean   :11.5  
+##  3rd Qu.:5.000   3rd Qu.:2.000   3rd Qu.:67.00   3rd Qu.:14.0  
+##  Max.   :5.000   Max.   :2.000   Max.   :90.00   Max.   :37.0  
+##  NA's   :5                       NA's   :21      NA's   :85    
+##      tillit      
+##  Min.   : 0.000  
+##  1st Qu.: 2.000  
+##  Median : 5.000  
+##  Mean   : 4.251  
+##  3rd Qu.: 6.000  
+##  Max.   :10.000  
+##  NA's   :89
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+         Hva forteller dette oss? For hver enkelt variabel.
+       
+       Modus/typetall har ingen egen funksjon i R. Da må vi i så fall lage funksjonen selv. 
+       
+       For å kun finne gjennomsnittet til en variabel i datasettet kan vi bruke funksjonen mean().
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{mean}\hlstd{(data}\hlopt{$}\hlstd{internettbruk,}
+       \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)} \hlcom{# Må fjerne missingverdier}
+\end{alltt}
+\begin{verbatim}
+## [1] 3.628832
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Hva blir gjennomsnittlig internettbruk blant respondentene?}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         Her forsøker jeg å kun finne gjennomsnittet til kjønnsvariabelen. 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{mean}\hlstd{(data}\hlopt{$}\hlstd{kjonn,}
+       \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.52714
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+         
+         Gir det mening å se på gjennomsnitt for kjønn? Det er viktig å vite variabelenes målenivå. Hvilke statistiske mål som er relevante, avhenger av variablenes målenivå. 
+       
+       Standardavvik er også et statistisk mål, og det viser respondentenes gjennomsnittlige avstand fra gjennomsnittet. Vi kan bruke funksjonen sd().
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{sd}\hlstd{(data}\hlopt{$}\hlstd{internettbruk,}
+     \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.645191
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Hva forteller dette standardavviket oss?}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         Variansen er standardavviket opphøyd i annen. Dermed er standardavviket kvadratroten av variansen. Det er enklere å tolke standardavvik enn varians. Jeg viser likevel hvordan man finner variansen.
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlcom{# Lagrer variansen i et eget objekt}
+  \hlstd{varians} \hlkwb{<-} \hlkwd{var}\hlstd{(data}\hlopt{$}\hlstd{internettbruk,}
+                 \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{sqrt}\hlstd{(varians)} \hlcom{# bruker funksjonen sqrt() for å finne kvadratroten}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.645191
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+         
+         \item \textbf{Univariat analyse:} Deskriptiv statistikk med én variabel
+       
+       Når vi kun har én variabel vi vil beskrive, har vi å gjøre med univariate fordelinger. Da blir vi kjent med variablene hver for seg. En univariat fordeling gir oss informasjon om hvordan observasjonene fordeler seg på en variabels ulike verdier. Igjen gir summary()-funksjonen en rask oversikt over statistiske mål og deskriptiv statistikk. Det  er her nyttig å gjøre seg godt kjent med de ulike statistiske målene. Men den univariate analysen kan ta ting et skritt videre, med for eksempel tabeller og histogrammer. 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{summary}\hlstd{(data)}
+\end{alltt}
+\begin{verbatim}
+##  internettbruk       kjonn           alder         utdanning   
+##  Min.   :1.000   Min.   :1.000   Min.   :16.00   Min.   : 0.0  
+##  1st Qu.:2.000   1st Qu.:1.000   1st Qu.:36.00   1st Qu.: 8.0  
+##  Median :5.000   Median :2.000   Median :52.00   Median :12.0  
+##  Mean   :3.629   Mean   :1.527   Mean   :51.28   Mean   :11.5  
+##  3rd Qu.:5.000   3rd Qu.:2.000   3rd Qu.:67.00   3rd Qu.:14.0  
+##  Max.   :5.000   Max.   :2.000   Max.   :90.00   Max.   :37.0  
+##  NA's   :5                       NA's   :21      NA's   :85    
+##      tillit      
+##  Min.   : 0.000  
+##  1st Qu.: 2.000  
+##  Median : 5.000  
+##  Mean   : 4.251  
+##  3rd Qu.: 6.000  
+##  Max.   :10.000  
+##  NA's   :89
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Det er også lurt å gjøre seg kjent med målenivået til variablene}
+\hlcom{# tibble() og str() finner ut det. Vi må installere pakkene og hente}
+\hlcom{# de i biblioteket}
+\hlkwd{install.packages}\hlstd{(}\hlstr{"tibble"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in contrib.url(repos, "{}source"{}): trying to use CRAN without setting a mirror}}\begin{alltt}
+\hlkwd{library}\hlstd{(tibble)}
+
+\hlkwd{tibble}\hlstd{(data)}
+\end{alltt}
+\begin{verbatim}
+## # A tibble: 2,745 x 5
+##    internettbruk kjonn alder utdanning tillit
+##            <int> <int> <int>     <int>  <int>
+##  1             5     2    67        18      8
+##  2             5     1    45        11      6
+##  3             1     2    73         8      0
+##  4             5     1    21         8     NA
+##  5             1     2    86         3      6
+##  6             5     2    53        17      6
+##  7             1     1    77        18      0
+##  8             5     2    35        18      3
+##  9             1     2    66        16      6
+## 10             4     1    52        10      6
+## # ... with 2,735 more rows
+\end{verbatim}
+\begin{alltt}
+\hlkwd{str}\hlstd{(data)}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	2745 obs. of  5 variables:
+##  $ internettbruk: int  5 5 1 5 1 5 1 5 1 4 ...
+##  $ kjonn        : int  2 1 2 1 2 2 1 2 2 1 ...
+##  $ alder        : int  67 45 73 21 86 53 77 35 66 52 ...
+##  $ utdanning    : int  18 11 8 8 3 17 18 18 16 10 ...
+##  $ tillit       : int  8 6 0 NA 6 6 0 3 6 6 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+         
+         For kategoriske variabler, på nominalnivå eller ordinalnivå, kan vi bruke frekvenstabeller for å beskrive dataene med tall, og kake- og søylediagram for å beskrive dataene grafisk. 
+       
+       Variabelen for kjønn er kategorisk og på nominalnivå. En frekvenstabell forteller oss hvor mange respondenter som er menn og hvor mange som er kvinner. Vi kan bruke funksjonen table(). 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{table}\hlstd{(data}\hlopt{$}\hlstd{kjonn)}
+\end{alltt}
+\begin{verbatim}
+## 
+##    1    2 
+## 1298 1447
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Lagrer table i et objekt, som vi kan eksportere til Word}
+
+\hlstd{tabell} \hlkwb{<-} \hlkwd{table}\hlstd{(data}\hlopt{$}\hlstd{kjonn)}
+\hlstd{tabell1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(tabell)}
+
+\hlcom{# Bruker stargazer-pakken til å eksportere tabellen}
+\hlcom{#library(stargazer)}
+\hlcom{#library(texreg)}
+\hlcom{# hvordan eksportere tabellen}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         Vi kan gjøre det samme for internettbruk, som er på ordinalnivå. 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlstd{tabell2} \hlkwb{<-} \hlkwd{table}\hlstd{(data}\hlopt{$}\hlstd{internettbruk)}
+\hlstd{tabell2}
+\end{alltt}
+\begin{verbatim}
+## 
+##    1    2    3    4    5 
+##  598  209  189  360 1384
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+         
+         Disse viser den absolutte fordelingen, altså totalt antall observasjoner for hver verdi. Vi kan også få den relative fordelingen mellom kategoriene, som viser prosentvis fordeling. Vi bruker prop.table()-funksjonen
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlstd{tabell3} \hlkwb{<-} \hlkwd{prop.table}\hlstd{(}\hlkwd{table}\hlstd{(data}\hlopt{$}\hlstd{internettbruk))}
+\hlstd{tabell3}
+\end{alltt}
+\begin{verbatim}
+## 
+##          1          2          3          4          5 
+## 0.21824818 0.07627737 0.06897810 0.13138686 0.50510949
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+         
+         Det er alltid et poeng å lage grafer og figurer for å beskrive dataen. Det gir nemlig et godt visuelt og mer intutitvt inntrykk av dataene. For kategoriske variabler kan vi lage kake- og søylediagram for å beskrive frekvensfordelingene til variablene. 
+       
+       For å få søylediagram bruker vi funksjonen barplot(). Den illustrerer absolutte og relative fordelinger like godt. 
+       
+       For å få et kakediagram bruker vi funksjonen pie().
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlcom{# Søylediagram for internettbruk}
+  \hlkwd{barplot}\hlstd{(tabell2)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-1} 
+\begin{kframe}\begin{alltt}
+\hlcom{# Kakediagram for internettbruk }
+\hlkwd{pie}\hlstd{(tabell2)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-10-2} 
+\begin{kframe}\begin{alltt}
+\hlcom{# Her ser vi tydelig at det er flest som oppgir 5 som alternativ }
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         For kontinuerlige variabler, på intervall- og forholdstallsnivå, kan vi også bruke frekvenstabeller. Dersom vi lager en frekvenstabell for alder, må vi omkode den til kategorier bed hjelp av cut()-funksjonen. I argumentet breaks = forteller jeg R hvor mange kategorier det skal være, og hvor bruddet skal være. Først undersøker jeg variabelen. 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{summary}\hlstd{(data}\hlopt{$}\hlstd{alder)} \hlcom{# Min er 16 år, og maks er 90 år. Lager så kategorier}
+\end{alltt}
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##   16.00   36.00   52.00   51.28   67.00   90.00      21
+\end{verbatim}
+\begin{alltt}
+\hlstd{omkodet_alder} \hlkwb{<-} \hlkwd{cut}\hlstd{(data}\hlopt{$}\hlstd{alder,}
+                     \hlkwc{breaks} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{16}\hlstd{,} \hlnum{30}\hlstd{,} \hlnum{45}\hlstd{,} \hlnum{60}\hlstd{,} \hlnum{75}\hlstd{,} \hlnum{90}\hlstd{))} \hlcom{# 16-30 }
+\hlcom{# 31-45 }
+\hlcom{# 46-60 }
+\hlcom{# 61-75}
+\hlcom{# 76-90}
+\hlkwd{table}\hlstd{(omkodet_alder)}
+\end{alltt}
+\begin{verbatim}
+## omkodet_alder
+## (16,30] (30,45] (45,60] (60,75] (75,90] 
+##     487     548     712     609     340
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+         Hva finner vi? 
+         
+         Grafiske fremstillinger er også nyttig med kontinuerlige variabler. Da kan vi blant annet bruke histogrammer. Også her må vi dele opp i kategorier. hist()-funksjonen gjør dette for oss, og vi trenger ikke gjøre det "for hånd", slik som ovenfor.  
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{hist}\hlstd{(data}\hlopt{$}\hlstd{alder,}
+       \hlkwc{breaks} \hlstd{=} \hlnum{5}\hlstd{)} \hlcom{# Vi definerer fem kategorier, som brytes der R ønsker}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-1} 
+\begin{kframe}\begin{alltt}
+\hlcom{# Virker bruddpunktet godt tilpasset dataen her?}
+
+\hlcom{# Vi kan også definere våre egne bruddpunkter for kategoriene}
+\hlkwd{hist}\hlstd{(data}\hlopt{$}\hlstd{alder,}
+     \hlkwc{breaks} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{16}\hlstd{,} \hlnum{30}\hlstd{,} \hlnum{45}\hlstd{,} \hlnum{60}\hlstd{,} \hlnum{75}\hlstd{,} \hlnum{90}\hlstd{),}
+     \hlkwc{probability} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlcom{# FALSE for å få frekvens}
+     \hlcom{# Vi kan også legge til flere argumenter. Bruk hjelpefilen ?hist }
+     \hlcom{# for å finne ut hva de betyr:}
+     \hlkwc{main} \hlstd{=} \hlstr{"Histogram over alder"}\hlstd{,}
+     \hlkwc{xlab} \hlstd{=} \hlstr{"Alder"}\hlstd{,}
+     \hlkwc{ylab} \hlstd{=} \hlstr{"Frekvens (antall respondenter)"}\hlstd{,}
+     \hlkwc{col} \hlstd{=} \hlstr{"lightblue"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in plot.histogram(r, freq = freq1, col = col, border = border, angle = angle, : the AREAS in the plot are wrong -- rather use 'freq = FALSE'}}\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-12-2} 
+
+\end{knitrout}
+         
+         I en større oppgave ønsker man ofte å presentere alle variablenes deskriptive statistikk i en felles tabell. Funksjonen stargazer() er fin til å gjøre dette. Først må vi innstallere pakken (hvis det ikke er gjort fra før), og hente den opp fra biblioteket. 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{install.packages}\hlstd{(}\hlstr{"stagazer"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in contrib.url(repos, "{}source"{}): trying to use CRAN without setting a mirror}}\begin{alltt}
+\hlkwd{library}\hlstd{(stargazer)}
+
+\hlkwd{stargazer}\hlstd{(data,}
+          \hlkwc{type} \hlstd{=} \hlstr{"text"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## 
+## ===================================================================
+## Statistic       N    Mean  St. Dev.  Min   Pctl(25) Pctl(75)  Max  
+## -------------------------------------------------------------------
+## internettbruk 2,740 3.629   1.645   1.000   2.000    5.000   5.000 
+## kjonn         2,745 1.527   0.499     1       1        2       2   
+## alder         2,724 51.277  19.429  16.000  36.000   67.000  90.000
+## utdanning     2,660 11.504  4.331   0.000   8.000    14.000  37.000
+## tillit        2,656 4.251   2.525   0.000   2.000    6.000   10.000
+## -------------------------------------------------------------------
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Vis hvordan du gjøre dette om til html.}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         \item \textbf{Bivariat analyse:} Deskriptiv statistikk med to variabler 
+       
+       Bivariat analyse brukes når man analyserer to variabler. Bivariat analyse er nyttig for å få oversikt over sammenhengen mellom to variabler, i tillegg til at det forteller oss noe om hvor mye to variabler korrelrerer, altså hvor mye de henger sammen. Bivariat statistikk er også nyttig for å teste korrelasjonens statistiske signifikans. (En oppgave kan være å forklare en annen/eller seg selv hva statistisk signifkans er). 
+       
+       Dersom vi har to kategoriske variabler vi ønsker å sammenlikne, kan vi presentere dem i en krysstabell. Ta bruker vi funksjonen table(). Vi kan opprette en krysstabell mellom  internettbruk og kjønn i et nytt objekt kalt krysstabell.
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlstd{krysstabell} \hlkwb{<-} \hlkwd{table}\hlstd{(data[,} \hlkwd{c}\hlstd{(}\hlstr{"internettbruk"}\hlstd{,} \hlstr{"kjonn"}\hlstd{)])}
+\hlstd{krysstabell}
+\end{alltt}
+\begin{verbatim}
+##              kjonn
+## internettbruk   1   2
+##             1 227 371
+##             2  90 119
+##             3  92  97
+##             4 184 176
+##             5 702 682
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Tolk tabellen. Er det noen forskjell på hvor ofte menn og kvinner bruker }
+\hlcom{# internett?}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         Denne tabellen oppgir frekvensfordelingen i absolutte tall. Vi kan også finne relative tall, altså andeler.
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{prop.table}\hlstd{(krysstabell,} \hlkwc{margin} \hlstd{=} \hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##              kjonn
+## internettbruk         1         2
+##             1 0.3795987 0.6204013
+##             2 0.4306220 0.5693780
+##             3 0.4867725 0.5132275
+##             4 0.5111111 0.4888889
+##             5 0.5072254 0.4927746
+\end{verbatim}
+\begin{alltt}
+\hlcom{# margin = 1 brukes for å regne ut fordelingen per linje, feks hvor mange }
+\hlcom{# menn relativt til kvinner som oppgir 1 på skalaen for internettbruk }
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         Kjikvadrattesten tester sammenhengen mellom to kategoriske variabler. Den sammenlikner krysstabellen vi har, men en hypotetisk tabell fra et annet utvalg der det ikke er noen sammeheng mellom variablene. Så tester den sannsynligheten for at tabellen vår er generert ved en tilfeldighet. Vi bruker funksjonen chisq.test()
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{chisq.test}\hlstd{(krysstabell)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Pearson's Chi-squared test
+## 
+## data:  krysstabell
+## X-squared = 31.18, df = 4, p-value = 2.813e-06
+\end{verbatim}
+\begin{alltt}
+\hlcom{# X-squared, altså kjikvadratet er på 31.18, og }
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         Vi kan lage søylediagrammer for å presentere sammenhengen grafisk. Igjen, det er alltid lurt, også for deg selv. Det er mer intuitivt å tolke, og lettere å se sammenhenger raskt. I søylediagrammet legges begge variablene inn, nemlig kjønn og internettbruk, ved bruk av barplot()-funksjonen. Finn ut hva legend() gjør.
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{barplot}\hlstd{(krysstabell,}
+          \hlkwc{beside} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+          \hlkwc{main} \hlstd{=} \hlstr{"Søylediagram over kjønn og internettbruk"}\hlstd{,}
+          \hlkwc{names.arg} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Kvinner"}\hlstd{,} \hlstr{"Menn"}\hlstd{))}
+\hlkwd{legend}\hlstd{(}\hlstr{"topleft"}\hlstd{,}
+       \hlkwc{bty} \hlstd{=} \hlstr{"n"}\hlstd{,}
+       \hlkwc{legend} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"1"}\hlstd{,} \hlstr{"2"}\hlstd{,} \hlstr{"3"}\hlstd{,} \hlstr{"4"}\hlstd{,} \hlstr{"5"}\hlstd{),}
+       \hlkwc{fill} \hlstd{=} \hlkwd{c}\hlstd{(}\hlkwd{gray}\hlstd{(}\hlnum{0.1}\hlstd{),} \hlkwd{gray}\hlstd{(}\hlnum{0.3}\hlstd{),} \hlkwd{gray}\hlstd{(}\hlnum{0.5}\hlstd{),} \hlkwd{gray}\hlstd{(}\hlnum{0.7}\hlstd{),} \hlkwd{gray}\hlstd{(}\hlnum{0.9}\hlstd{)))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-17-1} 
+
+\end{knitrout}
+         
+         Vi avslutter med bivariat analyse med to kontinuerlige variabler. (Dette er en forsmak på bivariat regresjonsanalyse.) Hensikten med dette  er å beskrive korrelasjonen mellom variablene. Vi kan beskrive denne sammenhengen med Pearsons r eller teste om korrelasjonen er statistisk signifikant.  
+       
+       Pearsons r beskriver styrken og retningen til korrelasjonen mellom to variabler. Den varierer fra -1 (negativ sammenheng) til 1 (positiv sammenheng). 0 indikerer ingen sammenheng. La oss teste med alder og utdanning. Vi bruker cor() funksjonen.
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlcom{# str(data)}
+  \hlstd{R} \hlkwb{<-} \hlkwd{cor}\hlstd{(}\hlkwc{x} \hlstd{= data}\hlopt{$}\hlstd{alder,}
+           \hlkwc{y} \hlstd{= data}\hlopt{$}\hlstd{utdanning,}
+           \hlkwc{use} \hlstd{=} \hlstr{"pairwise.complete.obs"}\hlstd{)}
+\hlstd{R}
+\end{alltt}
+\begin{verbatim}
+## [1] -0.4090912
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Hva forteller dette oss?}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         
+         Vi kan også sette opp en korrelasjonsmatrise for å utforske alle de bivariate korrelasjonene i datasettet mellom de akutelle variablene. 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{cor}\hlstd{(data,}
+      \hlkwc{use} \hlstd{=} \hlstr{"pairwise.complete.obs"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##               internettbruk       kjonn       alder  utdanning      tillit
+## internettbruk     1.0000000 -0.10206670 -0.64360948  0.5583489  0.15587219
+## kjonn            -0.1020667  1.00000000  0.06688781 -0.0528283 -0.04115814
+## alder            -0.6436095  0.06688781  1.00000000 -0.4090912 -0.09849861
+## utdanning         0.5583489 -0.05282830 -0.40909116  1.0000000  0.13911901
+## tillit            0.1558722 -0.04115814 -0.09849861  0.1391190  1.00000000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+         
+         Spredningsdiagrammer egner seg godt for å grafisk fremstille sammenhengen mellom to kontinuerlige variabler. Den viser hvor hver respondent (observasjonsenhet) plasserer seg på x-aksen og y-aksen. Vi bruker plot()-funksjonen. 
+       
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+  \hlkwd{plot}\hlstd{(}\hlkwc{x} \hlstd{= data}\hlopt{$}\hlstd{alder,} \hlcom{# Uavhengig variabel }
+       \hlkwc{y} \hlstd{= data}\hlopt{$}\hlstd{utdanning)} \hlcom{# Avhengig variabel }
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-1} 
+\begin{kframe}\begin{alltt}
+\hlcom{# Hva viser spredningsdiagrammet oss? }
+
+\hlcom{# Her legger vi til en støttelinje som viser den gjennomsnittlige }
+\hlcom{# sammenhengen mellom to variabler:}
+\hlkwd{scatter.smooth}\hlstd{(data}\hlopt{$}\hlstd{utdanning} \hlopt{~} \hlstd{data}\hlopt{$}\hlstd{alder)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-20-2} 
+\begin{kframe}\begin{alltt}
+\hlcom{# Hva viser dette oss?}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         Dette er begynnelsen på en regresjonsanalyse, som er tema for seminar 5. 
+       
+       \end{enumerate}
+       
+       \end{document}
