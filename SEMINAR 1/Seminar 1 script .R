@@ -6,15 +6,17 @@
 
 # Bli kjent med mappe-struktur og filer 
 
-# Opprette objekter 
+# Opprette objekter og bli kjent med hverandre!
 
 # Introduksjon til Klasser aka variabel målenivå
 
-# Introduksjon til dataframes
+# Introduksjon til dataframes 
+
+# Hvordan legge til flere variabler i et datasett du har laget
 
 # Indeksering 
 
-# R som kalkulator  
+# R som kalkulator  -- enkle utreninger 
 
 # Hjelpefiler i R 
 
