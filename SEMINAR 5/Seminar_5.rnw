@@ -1,0 +1,243 @@
+\documentclass{article}
+
+\title{Seminar 5}
+\author{Louisa Boulaziz}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\hfill \break I dag skal vi jobbe med det samme datasettet som sist gang ettersom vi kjenner variablene. Det kan være lurt når vi begynner med regresjonsanalyse. Vi begynner med å laste inn pakker og data. Vi skal bruke en ny pakke i dag. Denne må dere ta install.packages("modlr") først, også library som under. 
+
+<<Laster inn data og pakker, echo=TRUE, results='markup'>>=
+
+# Pakker 
+library(tidyverse)
+library(stargazer)
+library(modelr)
+
+# Laser inn data 
+data <- read.csv("https://raw.githubusercontent.com/louisabo/STV4020A/master/SEMINAR3/internett.csv")
+
+
+@
+
+\hfill \break Jeg bruker read.csv fordi dataene er csv-fil og de er lastet ned direkte fra internett. Når jeg gjør dette trenger jeg i prinsippet ikke å sette et "working directory." 
+\hfill \break Vi skal jobbe videre med NA. Se på noen andre koder vi kan bruke for å fiske ut NA. NA som dere husker er missing-verdier og disse må vi identifisere. Koden complete.cases viser hvor mange fullstendige eller ufullstendige rader det er i datasettet. Det vil si at denne koden identifiserer alle rader som har NA på en eller flere variable. Du kan bruke table for å printe dem
+
+<<NA, echo=TRUE, results='markup'>>=
+
+table(complete.cases(data)) # Viser ufullstendige rader
+
+table(is.na(data$internettbruk)) # Viser antall NA på variabel
+
+# Vi kan legge NA i et eget datasett:
+
+missing_2 <- data %>% 
+  filter_all(any_vars(is.na(.)))
+
+@
+
+\hfill \break Vi kan også lage en ny variabel i datasettet som flagger NA-rader -- altså rader eller observasjoner som har NA på en eller flere variable. Dette kan vi gjøre på alle variable, eventuelt bare flagge rader som har NA på en spesifikk variabel. Vi bruker mutate fra tidyverse-pakken til å opprette to nye variabler. 
+
+<<NA i variabel, echo=TRUE, results='markup'>>=
+
+data <- data %>% 
+  mutate(complete = complete.cases(.),   # ny var 1
+         internett_na = is.na(internettbruk)) # ny var 2
+
+
+table(data$internett_na)
+
+table(data$complete)
+@
+
+\hifill \break Her fjerner alle NA også jobber vi videre. Merk at jeg også fjerner de nye variablene jeg nettopp opprettet fordi ønsker jeg ikke å ha med meg videre. Du kan bruke select funksjonen etter drop_na() og deretter bare tall for å si til R hvilke variable du velge. Jeg vil velge de første fem, så jeg skriver 1:5. 
+
+<<Fjerner NA, echo=TRUE, results='markup'>>=
+
+data <- data %>% 
+  drop_na() %>% 
+  select(1:5)
+
+@
+
+\hfill \break Før vi går videre med regresjonsanalyse må vi repetere litt oppretting av nye variable. Dette er veldig viktig å kunne og dere må øve på dette før prøven. Som alltid i R finnes det mye kode som gjør det samme. Jeg skal vise litt forskjellige omkodinger. Først omkoder vi variabelen kjønn. Nå viser den 1 for menn og 2 for kvinner. Jeg vil at den skal vise 0 for menn og 1 for kvinner. 
+
+<<omkoder kjonn, echo=TRUE, results='markup'>>=
+
+
+data$kjonn_1 <- ifelse(data$kjonn == 1, 0, 1)
+
+# Sjekker at det blir riktig 
+table(data$kjonn_1)
+
+@
+
+\hfill \break Vi skal foreta en litt vanskeligere omkoding hvor vi koder om utdanning til en variabel som måler utdanning i kategori istedet for kontiuerlig. Vi skal opprette fire kategorier: 
+
+\begin{itemize}
+\item Alle som har antall år med utdanning 0-10 = lav
+\item Alle som har antall år med utdanning 11-20 = mellom
+\item Alle som har antall år med utdanning 21-30 = hoy
+\item Alle som har antall år med utdanning 31-37 = veldig hoy
+\end{itemize}
+
+\hfill \break Mutate er bra for store og flere omkodinger samtidig. Jeg vil bare legge til at denne koden er ikke noe jeg forventer dere må huske, men det er viktig at dere prøver å se om dere forstår logikken og syntaksen. Det er ekstremt viktig å prøve å forstå hva koden gjør, mer enn å huske den utenatt. 
+<<oppretter utdanning, echo=TRUE, results='markup'>>=
+
+data <- data %>% 
+  mutate(utdanning_1 = case_when(utdanning >=0 & 
+                                   utdanning <= 10 ~ "lav", 
+                                 utdanning >=11 & 
+                                   utdanning <= 20 
+                                 ~"middels"
+                                   , utdanning >= 21 &
+                                   utdanning <= 30 ~ "hoy",
+                                 utdanning >=30 & utdanning
+                                 <= 37 ~ "veldig hoy"))
+
+# Ser at det blir riktig: 
+table(data$utdanning_1) 
+
+table(data$utdanning_1, data$utdanning)
+
+@
+
+\hfill \break Som om denne koden ikke var nok, så skal vi omkode denne variabelen til å lage en dikotom utdanningsvariabel av den vi har laget med fire nivåer. Nå bruker jeg bare ifelse og ikke mutate for å vise. Disse kodene blir litt lange så det gjelder å holde tunga rett i munnen. Her koder jeg om alle som har lav og middels utdanning til 0 og alle som har høy og veldig høy utdanning til 1. 
+
+<<lager mer utdanning, echo=TRUE, results='markup'>>=
+
+data$utdanning_2 <- ifelse(data$utdanning_1 == "lav", 0, 
+                           ifelse(data$utdanning_1 == "middels", 0, 
+                                  ifelse(data$utdanning_1 == "hoy", 1, 
+                                         ifelse(data$utdanning_1 == "veldig hoy", 1, 
+                                                ifelse(data$utdanning_1)))))
+
+# Ser at det blir riktig 
+
+table(data$utdanning_2)
+table(data$utdanning_1, data$utdanning_2)
+
+# Vi kan plotte variablene dataene våre: 
+
+ggplot(data, aes(utdanning_1)) + 
+  geom_bar()
+
+
+ggplot(data, aes(utdanning_2)) + 
+  geom_bar() + 
+  scale_x_discrete() + 
+  xlab("Utdanning") + 
+  ylab("frekvens")
+@
+
+
+\hfill \break Før vi går videre til regresjon så sjekker vi klasse og fjerner de variablene vi ikke vil ha i datasettet. Jeg bruker igjen select og subsetter. Deretter koder jeg om den nye kjonnvariabelen til å bare hete kjonn.
+
+<<subset og klasse, echo = TRUE, results='markup'>>=
+
+
+str(data) 
+
+# Vi subsetter og tar med de variablene vi er interessert i 
+
+df <- data %>% 
+  select(internettbruk, alder, utdanning, tillit, kjonn_1)
+
+df <- df %>% 
+  rename(kjonn = kjonn_1)
+
+@
+
+
+\hfill \break \textbf{REGRESJON MED NUMERISK UAVHENGIG VARIABEL}
+For å kjøre en lineær regresjon i R så bruker vi funksjonen lm(). lm() har følgende syntaks:
+<<VISER LM, eval=FALSE, echo=TRUE, results='markup'>>=
+
+lm(avhengig_variabel ~ uavhengig_variabel, data = mitt_datasett)
+@
+\hfill \break Dersom datasettet ditt har manglende informasjon (missing/NA) så må du legge til et element som sier hvor- dan regresjonen skal forholde seg til dette. Ved å legge til na.action = "na.exclude" i lm()så beholder R informasjon om hvilke observasjoner som mangler data. 
+
+\hfill \break Vi skal nå kjøre en regresjon med internettbruk og alder. Vi har fjernet NA så vi trenger ikke na.action-argumentet. Resulatene fra regresjonen vi får ved hjelp av summary() og stargazer() er veldig nyttig. Vi får vite koeffisientene, standardfeilene og informasjon vi kan bruke til å evaluere modellen vår. I seminar skal vi bruke en del tid på å tolke disse tabellene.
+
+<<reg1, echo=TRUE, results = 'markup'>>=
+mod <- lm(internettbruk ~ alder, data = df)
+summary(mod)
+
+# For mer oversikt bruk stargazer 
+
+stargazer(mod, type = "text")
+
+@
+
+\hfill \break Vi må tolke resultatene vi får ut. Da kan det være viktig å først bare tenke på retning og signfikans. Deretter bør vi gå tilbake å tenke på hva er analyseenheten/observasjonsenheten og hvilket målenivå er variablene jeg analyserer? Vi må tolke både konstantledd og estimatet. 
+
+\hfill \break Ved hjelp av stargazer så kan vi også lagre tabeller lokalt på PC-en som vi kan bruke i word-dokumenter og liknende. Da endrer vi på type argumentet og legger til et out argument. out argumentet forteller i hvilken mappe du vil lagre filen samt hva filen skal hete. Da får du en .htm-fil som ser omtrent ut som i eksempelet under. Den kan du høyreklikke på og velge åpne i word dersom du skal ha tabellen inn i en oppgave eller liknende. Dette viste jeg sist gang. 
+
+\hfill \break Jeg synes ofte det vanskelig å tolke tallene, derfor er det så viktig å plotte tallene man får ut. Akkurat slik vi gjore sist gang. Det som er fint nå er at med modellen vi har laget har vi en OLS linje som vi kan plotte. Det er nå vi skal bruke modelr-pakken. Denne står det mye mer om i kapittel 23 i R for data Science som er lenket til på Canvas. I plottet under skal vi plotte prediksjonene våre -- altså de predikerte verdiene som model vår estimerer på bakgrunn av observasjonene i dataene. Vi lagrer prediksjonene i et eget objekt som jeg kaller prediksjoner. 
+
+<<prediksjonsplott, echo=TRUE, results='markup'>>=
+
+
+prediksjoner <- df %>% 
+  add_predictions(mod, "internettbruk") 
+
+# add_pred tar to argumenter: model og avhengig var
+
+# Ggplot 
+ggplot(df, aes(alder, internettbruk)) + 
+  geom_smooth(data = prediksjoner, colour = "red", 
+            size = 1) + 
+  ggtitle("Linær sammenheng mellom alder og internettbruk")
+
+# Legg merge til at linjen kommer fra prediksjons-dataene vi nettopp lagde. 
+
+@
+
+\hfill \break Vi kan se konfidensintervallet til estimatet og konstantleddet med følgende kode. 
+
+<<CI, echo=TRUE, results='markup'>>=
+confint(mod)
+@
+
+
+\hfill \break \textbf{Regresjon med dikotom uavhengig variabel}
+
+\hfill \break Vi skal nå kjøre regresjon med tillit og kjønn. Dette gjør vi mest for å øve oss på å tolke resultater. Tenk på målenivå de to ulike variablene. 
+
+<<bin model, echo=TRUE, results = 'markup'>>=
+
+
+mod1 <- lm(tillit ~ kjonn, data = df)
+summary(mod1)
+
+# Vi kan også printe disse resultatene med 
+# stargazer 
+
+stargazer(mod1, type = "text")
+
+@
+
+\hfill \break Vi plotter også resultatene fra denne regresjonen. 
+
+<<resultater mod2, echo=TRUE, results='markup'>>=
+
+prediksjoner1 <- df %>% 
+  add_predictions(mod1, "tillit")
+
+
+# Det ser litt rart ut 
+ggplot(df, aes(kjonn, tillit)) + 
+  geom_line(data = prediksjoner1)
+
+# Vi kan legge på argumenter: 
+ggplot(df, aes(kjonn, tillit)) + 
+  geom_line(data = prediksjoner1) + 
+  scale_x_discrete() + 
+  ggtitle("Smh mellom tillit og kjonn er negativ") + 
+  xlab("Viser smh for kvinner, mann er ref")
+
+
+@
+\end{document}
