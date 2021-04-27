@@ -23,6 +23,13 @@ library(ggplot2)
 # Laster inn datasettet og lagrer det som et objekt ved navn "dta". 
 data <- read.csv("https://raw.githubusercontent.com/louisabo/STV1020/main/SEMINAR%206/NORGE.csv")
 
+# Ser på verdiene i variabelen 
+table(data$brncntr)
+
+# Subsetter slik at jeg kun får med observasjoner som er født i Norge. 
+df <- data %>% 
+  filter(brncntr == "Yes")
+
 
 
 ####   OPPGAVE 2   ####
